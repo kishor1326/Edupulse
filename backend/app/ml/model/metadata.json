@@ -1,0 +1,79 @@
+{
+  "model_name": "Random Forest Classifier",
+  "model_version": "1.0.0",
+  "features": [
+    "attendance",
+    "marks",
+    "assignment_completion",
+    "previous_performance",
+    "participation",
+    "backlogs",
+    "study_hours"
+  ],
+  "classes": [
+    "LOW",
+    "MEDIUM",
+    "HIGH"
+  ],
+  "accuracy": 0.8361,
+  "precision": 0.8371,
+  "recall": 0.8361,
+  "f1_score": 0.8359,
+  "confusion_matrix": [
+    [
+      88,
+      16,
+      0
+    ],
+    [
+      14,
+      150,
+      11
+    ],
+    [
+      0,
+      18,
+      63
+    ]
+  ],
+  "training_samples": 1440,
+  "test_samples": 360,
+  "last_trained": "2026-08-24T04:10:56.547983+00:00",
+  "feature_importances": [
+    {
+      "feature": "backlogs",
+      "label": "Active Backlogs",
+      "importance": 0.2791
+    },
+    {
+      "feature": "attendance",
+      "label": "Attendance Rate",
+      "importance": 0.2171
+    },
+    {
+      "feature": "marks",
+      "label": "Current Academic Marks",
+      "importance": 0.1568
+    },
+    {
+      "feature": "assignment_completion",
+      "label": "Assignment Completion",
+      "importance": 0.1227
+    },
+    {
+      "feature": "study_hours",
+      "label": "Weekly Study Hours",
+      "importance": 0.0826
+    },
+    {
+      "feature": "previous_performance",
+      "label": "Previous Semester Performance",
+      "importance": 0.0768
+    },
+    {
+      "feature": "participation",
+      "label": "Classroom & Lab Participation",
+      "importance": 0.0648
+    }
+  ]
+}

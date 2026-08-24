@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: edupulse_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: edupulse_user
+      POSTGRES_PASSWORD: edupulse_secure_password_2026
+      POSTGRES_DB: edupulse_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U edupulse_user -d edupulse_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: edupulse_backend
+    restart: always
+    environment:
+      - DATABASE_URL=postgresql://edupulse_user:edupulse_secure_password_2026@postgres:5432/edupulse_db
+      - JWT_SECRET=super-secret-key-edupulse-ai-2026-production
+      - JWT_ALGORITHM=HS256
+      - BACKEND_CORS_ORIGINS=["http://localhost:3000","http://localhost:5173","*"]
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # React Frontend (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: edupulse_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
