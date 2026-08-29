@@ -32,7 +32,7 @@ def run_prediction_for_student(
         top_factors=ml_result["top_risk_factors"]
     )
     
-    predicted_by_name = predicted_by_user.name if predicted_by_user else "EduPulse AI Engine"
+    predicted_by_name = predicted_by_user.name if predicted_by_user else "SmartDrop AI Engine"
     
     # Create Prediction record
     pred = Prediction(

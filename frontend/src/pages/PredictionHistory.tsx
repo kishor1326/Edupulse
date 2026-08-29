@@ -10,7 +10,9 @@ import {
   ChevronRight,
   BrainCircuit,
   Sparkles,
-  Calendar
+  Calendar,
+  ShieldCheck,
+  ArrowRight
 } from 'lucide-react';
 import { RiskBadge } from '../components/common/RiskBadge';
 import { SHAPFactorChart } from '../components/predictions/SHAPFactorChart';
@@ -61,24 +63,33 @@ export const PredictionHistory: React.FC = () => {
   return (
     <div className="space-y-6 animate-fadeIn">
       {/* Header */}
-      <div>
-        <h1 className="text-2xl font-extrabold text-white">Prediction Audit Log & Assessment History</h1>
-        <p className="mt-1 text-xs sm:text-sm text-slate-400">
-          Complete institutional log of historical AI evaluations, SHAP factors, and predictions
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Prediction Audit Log & Assessment History
+            </h1>
+            <span className="px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/10 text-slate-300 text-xs font-mono font-bold">
+              {total} Logged Audits
+            </span>
+          </div>
+          <p className="mt-1.5 text-xs sm:text-sm text-slate-400 font-medium">
+            Complete institutional audit trail of machine learning risk evaluations, SHAP factors, and predictions
+          </p>
+        </div>
       </div>
 
       {/* Filter and Search */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800">
+      <div className="glass-panel p-4 rounded-2xl border border-white/10 shadow-lg">
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
           <form onSubmit={handleSearch} className="sm:col-span-8 relative">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by student name or institutional ID..."
-              className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all"
             />
           </form>
 
@@ -89,7 +100,7 @@ export const PredictionHistory: React.FC = () => {
                 setSelectedRisk(e.target.value);
                 setPage(1);
               }}
-              className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs font-semibold text-slate-200 focus:outline-none focus:border-emerald-500 transition-all"
             >
               <option value="ALL">All Risk Levels</option>
               <option value="LOW">Low Risk</option>
@@ -101,7 +112,7 @@ export const PredictionHistory: React.FC = () => {
       </div>
 
       {/* Table */}
-      <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+      <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden shadow-xl">
         {loading ? (
           <div className="p-6">
             <LoadingSkeleton rows={6} />
@@ -109,7 +120,7 @@ export const PredictionHistory: React.FC = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/80 text-slate-400 uppercase font-semibold tracking-wider border-b border-slate-800">
+              <thead className="bg-slate-900/70 text-slate-400 uppercase font-bold tracking-wider border-b border-white/10">
                 <tr>
                   <th className="px-6 py-3.5">Prediction ID</th>
                   <th className="px-6 py-3.5">Student</th>
@@ -121,7 +132,7 @@ export const PredictionHistory: React.FC = () => {
                   <th className="px-6 py-3.5 text-right">Audit Detail</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium text-slate-300">
+              <tbody className="divide-y divide-white/[0.06] font-medium text-slate-300">
                 {predictions.length === 0 ? (
                   <tr>
                     <td colSpan={8} className="px-6 py-12 text-center text-slate-400">
@@ -133,15 +144,15 @@ export const PredictionHistory: React.FC = () => {
                     <tr
                       key={p.id}
                       onClick={() => setSelectedDetail(p)}
-                      className="hover:bg-slate-900/50 cursor-pointer transition-colors"
+                      className="hover:bg-white/[0.03] cursor-pointer transition-colors"
                     >
-                      <td className="px-6 py-4 font-mono text-slate-400">#{p.id}</td>
+                      <td className="px-6 py-4 font-mono text-slate-400 font-bold">#{p.id}</td>
                       <td className="px-6 py-4">
-                        <span className="font-bold text-white block">{p.student_name}</span>
-                        <span className="font-mono text-[11px] text-emerald-400">{p.student_id_code}</span>
+                        <span className="font-bold text-white block hover:text-emerald-400 transition-colors">{p.student_name}</span>
+                        <span className="font-mono text-[11px] text-slate-400">{p.student_id_code}</span>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-bold text-[10px]">
+                        <span className="px-2.5 py-0.5 rounded-lg bg-white/[0.04] border border-white/10 text-slate-300 font-bold text-[10px]">
                           {p.department}
                         </span>
                       </td>
@@ -160,16 +171,17 @@ export const PredictionHistory: React.FC = () => {
                           minute: '2-digit',
                         })}
                       </td>
-                      <td className="px-6 py-4 text-slate-400">{p.predicted_by}</td>
+                      <td className="px-6 py-4 text-slate-300 font-mono text-[11px]">{p.predicted_by}</td>
                       <td className="px-6 py-4 text-right">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedDetail(p);
                           }}
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 transition-all inline-flex items-center gap-1 text-[11px] font-bold"
+                          className="px-2.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-emerald-400 border border-white/10 transition-all inline-flex items-center gap-1.5 text-[11px] font-bold shadow-sm"
                         >
-                          <Eye className="w-3.5 h-3.5" /> Explain
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Explain</span>
                         </button>
                       </td>
                     </tr>
@@ -181,7 +193,7 @@ export const PredictionHistory: React.FC = () => {
         )}
 
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400 bg-slate-900/40">
           <div>
             Showing <span className="font-semibold text-white">{predictions.length}</span> of{' '}
             <span className="font-semibold text-white">{total}</span> total assessments
@@ -190,7 +202,7 @@ export const PredictionHistory: React.FC = () => {
             <button
               disabled={page <= 1}
               onClick={() => setPage((p) => Math.max(1, p - 1))}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white disabled:opacity-30 transition-all"
+              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white disabled:opacity-30 transition-all"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -200,7 +212,7 @@ export const PredictionHistory: React.FC = () => {
             <button
               disabled={page >= totalPages}
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white disabled:opacity-30 transition-all"
+              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-white disabled:opacity-30 transition-all"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -210,33 +222,40 @@ export const PredictionHistory: React.FC = () => {
 
       {/* Detail Audit Drawer/Modal */}
       {selectedDetail && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
-          <div className="relative w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/80">
-              <div className="flex items-center gap-2">
-                <BrainCircuit className="w-5 h-5 text-emerald-400" />
-                <h2 className="text-base font-bold text-white">
-                  Assessment Audit Record #{selectedDetail.id}
-                </h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="relative w-full max-w-2xl bg-slate-900/95 border border-white/10 rounded-3xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-900/90">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
+                  <BrainCircuit className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight">
+                    Assessment Audit Record #{selectedDetail.id}
+                  </h2>
+                  <p className="text-[11px] text-slate-400 font-mono">
+                    Model: RandomForest • SHAP TreeExplainer
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setSelectedDetail(null)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+                className="p-2 rounded-xl text-slate-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition-all"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="p-6 overflow-y-auto space-y-6">
               {/* Header Info */}
-              <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60">
+              <div className="flex items-center justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/10">
                 <div>
-                  <h3 className="text-base font-extrabold text-white">{selectedDetail.student_name}</h3>
-                  <p className="text-xs text-slate-400">
+                  <h3 className="text-base font-extrabold text-white tracking-tight">{selectedDetail.student_name}</h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
                     ID: <span className="font-mono text-emerald-400 font-bold">{selectedDetail.student_id_code}</span> • Dept: {selectedDetail.department}
                   </p>
-                  <p className="text-[11px] text-slate-500 mt-1">
-                    Evaluated on {new Date(selectedDetail.created_at).toLocaleString()} by {selectedDetail.predicted_by}
+                  <p className="text-[11px] text-slate-400 mt-1 font-mono">
+                    Evaluated {new Date(selectedDetail.created_at).toLocaleString()} by {selectedDetail.predicted_by}
                   </p>
                 </div>
                 <RiskBadge level={selectedDetail.risk_level} score={selectedDetail.risk_score} size="lg" />
@@ -248,7 +267,7 @@ export const PredictionHistory: React.FC = () => {
                   <Sparkles className="w-4 h-4" />
                   <span>AI Generated Clinical Explanation</span>
                 </div>
-                <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800 text-xs sm:text-sm text-slate-200 leading-relaxed">
+                <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
                   {selectedDetail.explanation}
                 </div>
               </div>
@@ -263,27 +282,28 @@ export const PredictionHistory: React.FC = () => {
                 <h4 className="text-xs font-bold uppercase text-slate-400 tracking-wider">
                   Recommended Action Plan
                 </h4>
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   {selectedDetail.recommendations.map((rec, i) => (
-                    <div key={i} className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-300">
-                      <strong className="text-white">[{rec.priority}] </strong>
-                      {rec.recommendation}
+                    <div key={i} className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-xs text-slate-300">
+                      <strong className="text-emerald-400">[{rec.priority}] </strong>
+                      <span className="font-medium text-slate-200">{rec.recommendation}</span>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            <div className="p-4 border-t border-slate-800 flex justify-between items-center bg-slate-900/60">
+            <div className="p-4 border-t border-white/10 flex justify-between items-center bg-slate-900/80">
               <Link
                 to={`/students/${selectedDetail.student_id_code}`}
-                className="text-xs font-bold text-emerald-400 hover:text-emerald-300"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 transition-colors"
               >
-                Go to Full Student Profile →
+                <span>Go to Full Student Profile</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </Link>
               <button
                 onClick={() => setSelectedDetail(null)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white transition-all"
+                className="px-4 py-2 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] border border-white/10 text-xs font-bold text-white transition-all shadow-sm"
               >
                 Close Audit
               </button>

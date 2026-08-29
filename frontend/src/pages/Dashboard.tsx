@@ -11,7 +11,9 @@ import {
   ArrowRight,
   RefreshCw,
   Eye,
-  Plus
+  Plus,
+  Activity,
+  ChevronRight
 } from 'lucide-react';
 import {
   PieChart,
@@ -25,8 +27,8 @@ import {
   YAxis,
   CartesianGrid,
   Legend,
-  LineChart,
-  Line
+  AreaChart,
+  Area
 } from 'recharts';
 import { MetricCard } from '../components/common/MetricCard';
 import { RiskBadge } from '../components/common/RiskBadge';
@@ -92,7 +94,7 @@ export const Dashboard: React.FC = () => {
   const RISK_COLORS: Record<string, string> = {
     LOW: '#10B981',
     MEDIUM: '#F59E0B',
-    HIGH: '#EF4444',
+    HIGH: '#F43F5E',
   };
 
   if (loading && !overview) {
@@ -108,33 +110,34 @@ export const Dashboard: React.FC = () => {
       {/* Header & Quick Action */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-              Institutional Risk Overview
+              Institutional Intelligence Radar
             </h1>
-            <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold">
-              Live AI Data
+            <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 shadow-[0_0_12px_rgba(16,185,129,0.2)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              Live AI Metrics
             </span>
           </div>
-          <p className="mt-1 text-sm text-slate-400">
-            Real-time dropout vulnerability radar & active academic warning index
+          <p className="mt-1.5 text-sm text-slate-400 font-medium">
+            Real-time dropout vulnerability signals, cohort trajectories & early-warning action triggers
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={loadDashboardData}
-            title="Refresh database values"
-            className="p-2.5 rounded-xl bg-slate-800/80 border border-slate-700 hover:bg-slate-700 text-slate-300 transition-all shadow-sm"
+            title="Refresh database metrics"
+            className="p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-emerald-500/30 text-slate-300 transition-all shadow-sm group"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-emerald-400' : ''}`} />
+            <RefreshCw className={`w-4 h-4 transition-transform group-hover:rotate-180 duration-500 ${loading ? 'animate-spin text-emerald-400' : ''}`} />
           </button>
           <Link
             to="/prediction"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/20"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40"
           >
-            <Sparkles className="w-4 h-4" />
-            <span>AI Risk Assessment</span>
+            <Sparkles className="w-4 h-4 fill-slate-950" />
+            <span>AI Risk Sandbox</span>
           </Link>
         </div>
       </div>
@@ -149,45 +152,50 @@ export const Dashboard: React.FC = () => {
           variant="default"
         />
         <MetricCard
-          title="Low Risk"
+          title="Low Risk Cohort"
           value={overview?.low_risk_count.toLocaleString() || '0'}
-          subtitle="Stable academic standing"
+          subtitle="Stable academic track"
           icon={ShieldCheck}
           variant="emerald"
         />
         <MetricCard
           title="Medium Risk"
           value={overview?.medium_risk_count.toLocaleString() || '0'}
-          subtitle="Needs monitoring"
+          subtitle="Monitoring required"
           icon={AlertCircle}
           variant="amber"
         />
         <MetricCard
-          title="High Risk Alert"
+          title="High Risk Critical"
           value={overview?.high_risk_count.toLocaleString() || '0'}
           subtitle={`${overview?.high_risk_percentage || 0}% of student body`}
           icon={AlertTriangle}
           variant="rose"
         />
         <MetricCard
-          title="Need Intervention"
+          title="Active Interventions"
           value={overview?.interventions_needed_count.toLocaleString() || '0'}
-          subtitle={`Completed: ${overview?.interventions_completed_count || 0}`}
+          subtitle={`Resolved: ${overview?.interventions_completed_count || 0}`}
           icon={ClipboardList}
-          variant="indigo"
+          variant="cyan"
         />
       </div>
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Risk Distribution Donut */}
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+        <div className="glass-panel p-6 rounded-2xl border border-white/10 flex flex-col justify-between hover:border-white/15 transition-all">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-base font-bold text-white">Risk Distribution</h2>
-              <span className="text-xs text-slate-400">Total: {overview?.total_students}</span>
+              <div>
+                <h2 className="text-base font-bold text-white tracking-tight">Risk Distribution</h2>
+                <p className="text-xs text-slate-400">Institutional Vulnerability Ratio</p>
+              </div>
+              <span className="text-xs font-mono font-bold text-slate-400 bg-white/[0.04] px-2.5 py-1 rounded-lg border border-white/5">
+                {overview?.total_students} Students
+              </span>
             </div>
-            <div className="h-64 w-full">
+            <div className="h-64 w-full relative">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -196,56 +204,64 @@ export const Dashboard: React.FC = () => {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={65}
-                    outerRadius={95}
-                    paddingAngle={4}
+                    innerRadius={68}
+                    outerRadius={96}
+                    paddingAngle={5}
+                    cornerRadius={4}
                   >
                     {riskDist.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={RISK_COLORS[entry.name] || '#64748B'}
-                        stroke="#0F172A"
-                        strokeWidth={2}
+                        stroke="#0B1326"
+                        strokeWidth={3}
                       />
                     ))}
                   </Pie>
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: '#0F172A',
-                      borderColor: '#334155',
+                      backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                      borderColor: 'rgba(255, 255, 255, 0.1)',
                       borderRadius: '12px',
                       color: '#F8FAFC',
                       fontSize: '12px',
+                      boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.5)',
                     }}
                   />
                 </PieChart>
               </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">High Risk</span>
+                <span className="text-2xl font-mono font-extrabold text-rose-400">
+                  {overview?.high_risk_percentage || 0}%
+                </span>
+              </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-800 text-center">
+          <div className="grid grid-cols-3 gap-2.5 pt-4 border-t border-white/10 text-center">
             {riskDist.map((item) => (
-              <div key={item.name} className="p-2 rounded-xl bg-slate-900/60 border border-slate-800">
+              <div key={item.name} className="p-2.5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
                 <div className="flex items-center justify-center gap-1.5 mb-1">
                   <span
-                    className="w-2.5 h-2.5 rounded-full"
+                    className="w-2 h-2 rounded-full"
                     style={{ backgroundColor: RISK_COLORS[item.name] }}
                   />
-                  <span className="text-xs font-bold text-slate-300">{item.name}</span>
+                  <span className="text-[11px] font-bold text-slate-300">{item.name}</span>
                 </div>
-                <p className="text-base font-extrabold text-white">{item.value}</p>
-                <p className="text-[10px] text-slate-400 font-mono">{item.percentage}%</p>
+                <p className="text-base font-extrabold font-mono text-white">{item.value}</p>
+                <p className="text-[10px] text-slate-400 font-mono font-medium">{item.percentage}%</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Department-wise Risk Breakdown */}
-        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-slate-800">
+        <div className="lg:col-span-2 glass-panel p-6 rounded-2xl border border-white/10 hover:border-white/15 transition-all">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h2 className="text-base font-bold text-white">Department-Wise Risk Breakdown</h2>
-              <p className="text-xs text-slate-400">Comparing Low, Medium, and High risk counts by department</p>
+              <h2 className="text-base font-bold text-white tracking-tight">Department-Wise Risk Stratification</h2>
+              <p className="text-xs text-slate-400">Comparative breakdown across academic faculties</p>
             </div>
             <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">
               Live DB Aggregation
@@ -255,156 +271,176 @@ export const Dashboard: React.FC = () => {
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={deptRisk} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
                 <XAxis dataKey="department" stroke="#64748B" fontSize={12} tickLine={false} />
                 <YAxis stroke="#64748B" fontSize={12} tickLine={false} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#0F172A',
-                    borderColor: '#334155',
+                    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                    borderColor: 'rgba(255, 255, 255, 0.1)',
                     borderRadius: '12px',
                     color: '#F8FAFC',
                     fontSize: '12px',
                   }}
                 />
-                <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
+                <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
                 <Bar dataKey="low_risk" name="Low Risk" fill="#10B981" radius={[4, 4, 0, 0]} stackId="a" />
                 <Bar dataKey="medium_risk" name="Medium Risk" fill="#F59E0B" radius={[4, 4, 0, 0]} stackId="a" />
-                <Bar dataKey="high_risk" name="High Risk" fill="#EF4444" radius={[4, 4, 0, 0]} stackId="a" />
+                <Bar dataKey="high_risk" name="High Risk" fill="#F43F5E" radius={[4, 4, 0, 0]} stackId="a" />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
       </div>
 
-      {/* Secondary Chart: Risk Trend */}
-      <div className="glass-panel p-6 rounded-2xl border border-slate-800">
+      {/* Secondary Chart: Risk Trend Area Chart */}
+      <div className="glass-panel p-6 rounded-2xl border border-white/10 hover:border-white/15 transition-all">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="text-base font-bold text-white">Prediction Timeline & Risk Trends</h2>
-            <p className="text-xs text-slate-400">Chronological student risk assessments across campus</p>
+            <h2 className="text-base font-bold text-white tracking-tight">Prediction Timeline & Risk Trajectory</h2>
+            <p className="text-xs text-slate-400">Institutional temporal vulnerability metrics</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-slate-400 flex items-center gap-1">
+              <Activity className="w-3.5 h-3.5 text-emerald-400" />
+              Continuous Model Evaluation
+            </span>
           </div>
         </div>
 
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={riskTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" vertical={false} />
+            <AreaChart data={riskTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <defs>
+                <linearGradient id="lowRiskGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="highRiskGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#F43F5E" stopOpacity={0.4} />
+                  <stop offset="95%" stopColor="#F43F5E" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" vertical={false} />
               <XAxis dataKey="date" stroke="#64748B" fontSize={12} tickLine={false} />
               <YAxis stroke="#64748B" fontSize={12} tickLine={false} />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: '#0F172A',
-                  borderColor: '#334155',
+                  backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                  borderColor: 'rgba(255, 255, 255, 0.1)',
                   borderRadius: '12px',
                   color: '#F8FAFC',
                   fontSize: '12px',
                 }}
               />
-              <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '8px' }} />
-              <Line type="monotone" dataKey="low" name="Low Risk" stroke="#10B981" strokeWidth={2.5} dot={false} />
-              <Line type="monotone" dataKey="medium" name="Medium Risk" stroke="#F59E0B" strokeWidth={2.5} dot={false} />
-              <Line type="monotone" dataKey="high" name="High Risk Alert" stroke="#EF4444" strokeWidth={3} dot={{ r: 4, fill: '#EF4444' }} />
-            </LineChart>
+              <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+              <Area type="monotone" dataKey="low" name="Low Risk" stroke="#10B981" strokeWidth={2.5} fillOpacity={1} fill="url(#lowRiskGrad)" />
+              <Area type="monotone" dataKey="medium" name="Medium Risk" stroke="#F59E0B" strokeWidth={2} fillOpacity={0} />
+              <Area type="monotone" dataKey="high" name="High Risk Alert" stroke="#F43F5E" strokeWidth={3} fillOpacity={1} fill="url(#highRiskGrad)" />
+            </AreaChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* High-Risk Students Alert Table */}
-      <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
-        <div className="p-6 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden shadow-xl">
+        <div className="p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-900/40">
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400">
+            <div className="p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/25 text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.2)]">
               <AlertTriangle className="w-5 h-5" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white">Critical Priority: High-Risk Students</h2>
+              <h2 className="text-base font-bold text-white tracking-tight">Critical Priority: High-Risk Students</h2>
               <p className="text-xs text-slate-400">
-                Students requiring prompt faculty intervention based on attendance & exam metrics
+                Undergraduates flagged for immediate academic support or faculty advising
               </p>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
             <div className="relative">
-              <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search high risk students..."
-                className="pl-9 pr-3.5 py-1.5 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 w-52 sm:w-64"
+                placeholder="Filter by name, ID or dept..."
+                className="pl-9 pr-3.5 py-2 rounded-xl bg-slate-950/70 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 w-56 sm:w-64 transition-all"
               />
             </div>
             <Link
               to="/students?risk_level=HIGH"
-              className="text-xs font-bold text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1"
+              className="text-xs font-bold text-emerald-400 hover:text-emerald-300 inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 hover:bg-emerald-500/20 transition-all"
             >
-              View All <ArrowRight className="w-3.5 h-3.5" />
+              <span>View All</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-900/80 text-slate-400 uppercase font-semibold tracking-wider border-b border-slate-800">
+            <thead className="bg-slate-900/70 text-slate-400 uppercase font-bold tracking-wider border-b border-white/10">
               <tr>
-                <th className="px-6 py-3.5">Student ID</th>
-                <th className="px-6 py-3.5">Student Name</th>
+                <th className="px-6 py-3.5">Student</th>
                 <th className="px-6 py-3.5">Department</th>
                 <th className="px-6 py-3.5">Attendance</th>
                 <th className="px-6 py-3.5">Marks</th>
-                <th className="px-6 py-3.5">Risk Level</th>
+                <th className="px-6 py-3.5">Risk Status</th>
                 <th className="px-6 py-3.5">Risk Score</th>
-                <th className="px-6 py-3.5 text-right">Actions</th>
+                <th className="px-6 py-3.5 text-right">Quick Action</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 font-medium text-slate-300">
+            <tbody className="divide-y divide-white/[0.06] font-medium text-slate-300">
               {filteredHighRisk.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="px-6 py-8 text-center text-slate-400">
-                    No high-risk students found matching the criteria.
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-400">
+                    No high-risk students found matching the query.
                   </td>
                 </tr>
               ) : (
-                filteredHighRisk.slice(0, 10).map((student) => {
+                filteredHighRisk.slice(0, 8).map((student) => {
                   const pred = student.latest_prediction;
                   return (
                     <tr
                       key={student.id}
-                      className="hover:bg-slate-900/60 transition-colors"
+                      className="hover:bg-white/[0.03] transition-colors"
                     >
-                      <td className="px-6 py-4 font-mono font-bold text-white">
-                        {student.student_id}
+                      <td className="px-6 py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center font-bold text-rose-400 font-mono text-xs">
+                            {student.name.charAt(0)}
+                          </div>
+                          <div>
+                            <Link
+                              to={`/students/${student.student_id}`}
+                              className="font-bold text-white hover:text-emerald-400 transition-colors"
+                            >
+                              {student.name}
+                            </Link>
+                            <p className="text-[11px] font-mono text-slate-400">{student.student_id}</p>
+                          </div>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
-                        <Link
-                          to={`/students/${student.student_id}`}
-                          className="font-bold text-white hover:text-emerald-400 transition-colors"
-                        >
-                          {student.name}
-                        </Link>
-                        <p className="text-[11px] text-slate-500">{student.email || 'No email'}</p>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-300 font-bold text-[11px]">
+                        <span className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-slate-300 font-bold text-[11px]">
                           {student.department} (Yr {student.year})
                         </span>
                       </td>
                       <td className="px-6 py-4 font-mono">
-                        <span className={student.attendance < 60 ? 'text-rose-400 font-bold' : 'text-slate-300'}>
+                        <span className={`px-2 py-0.5 rounded ${student.attendance < 65 ? 'bg-rose-500/10 text-rose-400 font-bold' : 'text-slate-300'}`}>
                           {student.attendance}%
                         </span>
                       </td>
                       <td className="px-6 py-4 font-mono">
-                        <span className={student.marks < 50 ? 'text-rose-400 font-bold' : 'text-slate-300'}>
+                        <span className={`px-2 py-0.5 rounded ${student.marks < 55 ? 'bg-rose-500/10 text-rose-400 font-bold' : 'text-slate-300'}`}>
                           {student.marks}%
                         </span>
                       </td>
                       <td className="px-6 py-4">
                         <RiskBadge level={pred?.risk_level || 'HIGH'} showIcon={false} size="sm" />
                       </td>
-                      <td className="px-6 py-4 font-mono font-bold text-rose-400">
+                      <td className="px-6 py-4 font-mono font-extrabold text-rose-400">
                         {pred?.risk_score ? `${pred.risk_score.toFixed(0)}%` : '85%'}
                       </td>
                       <td className="px-6 py-4 text-right">
@@ -415,14 +451,15 @@ export const Dashboard: React.FC = () => {
                               setIsInterventionModalOpen(true);
                             }}
                             title="Assign Intervention"
-                            className="p-1.5 rounded-lg bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 transition-all"
+                            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-indigo-500/15 hover:bg-indigo-500/25 text-indigo-300 border border-indigo-500/30 transition-all font-semibold text-xs"
                           >
-                            <Plus className="w-4 h-4" />
+                            <Plus className="w-3.5 h-3.5" />
+                            <span>Intervene</span>
                           </button>
                           <Link
                             to={`/students/${student.student_id}`}
-                            title="View Full Risk Profile"
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all inline-flex items-center"
+                            title="View Full Student Profile"
+                            className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/10 transition-all inline-flex items-center"
                           >
                             <Eye className="w-4 h-4" />
                           </Link>

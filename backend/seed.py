@@ -27,31 +27,31 @@ def seed_demo_data(db: Session = None):
         
     try:
         # 1. Create Default Users if absent
-        for admin_email in ["admin@edupulse.edu", "admin@smartdrop.edu"]:
-            admin_user = db.query(User).filter(User.email == admin_email).first()
-            if not admin_user:
-                admin_user = User(
-                    name="Dr. Elena Rostova (Admin)",
-                    email=admin_email,
-                    password_hash=get_password_hash("admin123"),
-                    role="admin",
-                    created_at=datetime.now(timezone.utc)
-                )
-                db.add(admin_user)
+        admin_user = db.query(User).filter(User.email == "admin@smartdrop.edu").first()
+        if not admin_user:
+            admin_user = User(
+                name="Dr. Elena Rostova (Admin)",
+                email="admin@smartdrop.edu",
+                password_hash=get_password_hash("admin123"),
+                role="admin",
+                created_at=datetime.now(timezone.utc)
+            )
+            db.add(admin_user)
             
-        for faculty_email in ["faculty@edupulse.edu", "faculty@smartdrop.edu"]:
-            faculty_user = db.query(User).filter(User.email == faculty_email).first()
-            if not faculty_user:
-                faculty_user = User(
-                    name="Prof. Arvind Sharma (Faculty)",
-                    email=faculty_email,
-                    password_hash=get_password_hash("faculty123"),
-                    role="faculty",
-                    created_at=datetime.now(timezone.utc)
-                )
-                db.add(faculty_user)
+        faculty_user = db.query(User).filter(User.email == "faculty@smartdrop.edu").first()
+        if not faculty_user:
+            faculty_user = User(
+                name="Prof. Arvind Sharma (Faculty)",
+                email="faculty@smartdrop.edu",
+                password_hash=get_password_hash("faculty123"),
+                role="faculty",
+                created_at=datetime.now(timezone.utc)
+            )
+            db.add(faculty_user)
             
         db.commit()
+        db.refresh(admin_user)
+        db.refresh(faculty_user)
 
         # 2. Check if students exist
         existing_student_count = db.query(Student).count()

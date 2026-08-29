@@ -11,7 +11,9 @@ import {
   Edit2,
   Trash2,
   Eye,
-  RefreshCw
+  RefreshCw,
+  Sparkles,
+  UserCheck
 } from 'lucide-react';
 import { RiskBadge } from '../components/common/RiskBadge';
 import { LoadingSkeleton } from '../components/common/LoadingSkeleton';
@@ -88,8 +90,15 @@ export const Interventions: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-extrabold text-white">Faculty Academic Interventions Hub</h1>
-          <p className="mt-1 text-xs sm:text-sm text-slate-400">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              Faculty Academic Interventions Hub
+            </h1>
+            <span className="px-2.5 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-300 text-xs font-bold font-mono">
+              {counts.total} Logged Programs
+            </span>
+          </div>
+          <p className="mt-1.5 text-xs sm:text-sm text-slate-400 font-medium">
             Track counseling assignments, mentoring check-ins, and student recovery progress
           </p>
         </div>
@@ -99,43 +108,44 @@ export const Interventions: React.FC = () => {
             setEditingItem(null);
             setIsModalOpen(true);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs transition-all shadow-lg shadow-emerald-500/20 self-start sm:self-auto"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 self-start sm:self-auto"
         >
-          <Plus className="w-4 h-4" /> New Intervention
+          <Plus className="w-4 h-4" />
+          <span>New Intervention</span>
         </button>
       </div>
 
       {/* Summary KPI Pills */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-          <p className="text-xs font-bold text-slate-400 uppercase">Total Interventions</p>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Actions</p>
           <p className="mt-1 text-2xl font-black font-mono text-white">{counts.total}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-          <p className="text-xs font-bold text-amber-400 uppercase">Pending Action</p>
+        <div className="p-4 rounded-2xl bg-amber-500/5 border border-amber-500/20 hover:border-amber-500/30 transition-all">
+          <p className="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Pending Action</p>
           <p className="mt-1 text-2xl font-black font-mono text-amber-400">{counts.pending}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-          <p className="text-xs font-bold text-indigo-400 uppercase">In Progress</p>
+        <div className="p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 hover:border-indigo-500/30 transition-all">
+          <p className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">In Progress</p>
           <p className="mt-1 text-2xl font-black font-mono text-indigo-400">{counts.in_progress}</p>
         </div>
-        <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-          <p className="text-xs font-bold text-emerald-400 uppercase">Completed / Resolved</p>
+        <div className="p-4 rounded-2xl bg-emerald-500/5 border border-emerald-500/20 hover:border-emerald-500/30 transition-all">
+          <p className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Completed / Resolved</p>
           <p className="mt-1 text-2xl font-black font-mono text-emerald-400">{counts.completed}</p>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="glass-panel p-4 rounded-2xl border border-slate-800">
+      <div className="glass-panel p-4 rounded-2xl border border-white/10 shadow-lg">
         <div className="grid grid-cols-1 sm:grid-cols-12 gap-3">
           <form onSubmit={handleSearchSubmit} className="sm:col-span-6 relative">
-            <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by student, mentor, or action..."
-              className="w-full pl-9 pr-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full pl-9 pr-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition-all"
             />
           </form>
 
@@ -143,7 +153,7 @@ export const Interventions: React.FC = () => {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs font-semibold text-slate-200 focus:outline-none focus:border-emerald-500 transition-all"
             >
               <option value="ALL">All Statuses</option>
               <option value="Pending">Pending</option>
@@ -156,7 +166,7 @@ export const Interventions: React.FC = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-slate-200 focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-xs font-semibold text-slate-200 focus:outline-none focus:border-emerald-500 transition-all"
             >
               <option value="ALL">All Priorities</option>
               <option value="Critical">Critical Priority</option>
@@ -169,7 +179,7 @@ export const Interventions: React.FC = () => {
       </div>
 
       {/* Interventions Table */}
-      <div className="glass-panel rounded-2xl border border-slate-800 overflow-hidden">
+      <div className="glass-panel rounded-2xl border border-white/10 overflow-hidden shadow-xl">
         {loading ? (
           <div className="p-6">
             <LoadingSkeleton rows={5} />
@@ -177,7 +187,7 @@ export const Interventions: React.FC = () => {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-900/80 text-slate-400 uppercase font-semibold tracking-wider border-b border-slate-800">
+              <thead className="bg-slate-900/70 text-slate-400 uppercase font-bold tracking-wider border-b border-white/10">
                 <tr>
                   <th className="px-6 py-3.5">Student</th>
                   <th className="px-6 py-3.5">Priority</th>
@@ -187,7 +197,7 @@ export const Interventions: React.FC = () => {
                   <th className="px-6 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 font-medium text-slate-300">
+              <tbody className="divide-y divide-white/[0.06] font-medium text-slate-300">
                 {interventions.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="px-6 py-12 text-center text-slate-400">
@@ -196,27 +206,32 @@ export const Interventions: React.FC = () => {
                   </tr>
                 ) : (
                   interventions.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-900/50 transition-colors">
+                    <tr key={item.id} className="hover:bg-white/[0.03] transition-colors">
                       <td className="px-6 py-4">
                         {item.student ? (
-                          <div>
-                            <Link
-                              to={`/students/${item.student.student_id}`}
-                              className="font-bold text-white hover:text-emerald-400 transition-colors"
-                            >
-                              {item.student.name}
-                            </Link>
-                            <div className="flex items-center gap-1.5 mt-0.5">
-                              <span className="font-mono text-[10px] text-emerald-400">
-                                {item.student.student_id}
-                              </span>
-                              <span className="text-[10px] text-slate-500">
-                                ({item.student.department} • Att: {item.student.attendance}%)
-                              </span>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center font-bold text-indigo-400 font-mono text-xs">
+                              {item.student.name.charAt(0)}
+                            </div>
+                            <div>
+                              <Link
+                                to={`/students/${item.student.student_id}`}
+                                className="font-bold text-white hover:text-emerald-400 transition-colors"
+                              >
+                                {item.student.name}
+                              </Link>
+                              <div className="flex items-center gap-1.5 mt-0.5">
+                                <span className="font-mono text-[10px] text-emerald-400">
+                                  {item.student.student_id}
+                                </span>
+                                <span className="text-[10px] text-slate-400">
+                                  ({item.student.department} • Att: {item.student.attendance}%)
+                                </span>
+                              </div>
                             </div>
                           </div>
                         ) : (
-                          <span className="text-slate-500 font-mono">Student ID #{item.student_id}</span>
+                          <span className="text-slate-400 font-mono">Student ID #{item.student_id}</span>
                         )}
                       </td>
                       <td className="px-6 py-4">
@@ -239,18 +254,18 @@ export const Interventions: React.FC = () => {
                         {item.notes && <p className="text-[11px] text-slate-400 italic mt-0.5">"{item.notes}"</p>}
                       </td>
                       <td className="px-6 py-4 font-semibold text-slate-200">
-                        {item.assigned_faculty || <span className="text-slate-500 italic">Unassigned</span>}
+                        {item.assigned_faculty || <span className="text-slate-400 italic">Unassigned</span>}
                       </td>
                       <td className="px-6 py-4">
                         <select
                           value={item.status}
                           onChange={(e) => handleStatusChange(item.id, e.target.value as any)}
-                          className={`px-2.5 py-1 rounded-xl text-xs font-bold focus:outline-none border ${
+                          className={`px-3 py-1 rounded-xl text-xs font-bold focus:outline-none border transition-all ${
                             item.status === 'Completed'
-                              ? 'bg-emerald-950/40 border-emerald-500/30 text-emerald-400'
+                              ? 'bg-emerald-950/50 border-emerald-500/40 text-emerald-400'
                               : item.status === 'In Progress'
-                              ? 'bg-indigo-950/40 border-indigo-500/30 text-indigo-400'
-                              : 'bg-amber-950/40 border-amber-500/30 text-amber-400'
+                              ? 'bg-indigo-950/50 border-indigo-500/40 text-indigo-300'
+                              : 'bg-amber-950/50 border-amber-500/40 text-amber-400'
                           }`}
                         >
                           <option value="Pending">Pending</option>
@@ -266,7 +281,7 @@ export const Interventions: React.FC = () => {
                               setIsModalOpen(true);
                             }}
                             title="Edit notes / details"
-                            className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all"
+                            className="p-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 border border-white/10 transition-all"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>

@@ -12,7 +12,7 @@ export const api = axios.create({
 // Request interceptor for JWT authentication
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('edupulse_token') || localStorage.getItem('smartdrop_token');
+    const token = localStorage.getItem('smartdrop_token');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -28,8 +28,6 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Clear token and redirect to login if not already there
       if (!window.location.pathname.includes('/login') && !window.location.pathname.includes('/register')) {
-        localStorage.removeItem('edupulse_token');
-        localStorage.removeItem('edupulse_user');
         localStorage.removeItem('smartdrop_token');
         localStorage.removeItem('smartdrop_user');
         window.location.href = '/login';

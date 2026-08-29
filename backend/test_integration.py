@@ -6,7 +6,7 @@ def test_full_system_workflow():
     client = TestClient(app)
     
     print("==================================================")
-    print("  RUNNING EDUPULSE AUTOMATED SYSTEM TEST SUITE ")
+    print("  RUNNING SMARTDROP AI AUTOMATED SYSTEM TEST SUITE ")
     print("==================================================")
 
     # 1. Health Check
@@ -16,7 +16,7 @@ def test_full_system_workflow():
 
     # 2. Auth Login (Admin & Faculty)
     login_res = client.post("/api/auth/login", json={
-        "email": "admin@edupulse.edu",
+        "email": "admin@smartdrop.edu",
         "password": "admin123"
     })
     assert login_res.status_code == 200, f"Admin login failed: {login_res.text}"

@@ -23,7 +23,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
       <div className="h-screen w-screen bg-slate-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 rounded-full border-2 border-emerald-500 border-t-transparent animate-spin"></div>
-          <span className="text-xs font-semibold text-slate-400">Loading EduPulse...</span>
+          <span className="text-xs font-semibold text-slate-400">Loading SmartDrop AI...</span>
         </div>
       </div>
     );

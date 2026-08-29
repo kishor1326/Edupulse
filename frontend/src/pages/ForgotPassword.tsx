@@ -12,17 +12,23 @@ export const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <div className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 p-3 shadow-xl shadow-emerald-500/20 mb-3">
-          <GraduationCap className="w-7 h-7 text-slate-950 font-black" />
+    <div className="min-h-screen bg-[#0b1326] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden font-sans selection:bg-emerald-500/30 selection:text-emerald-200">
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-emerald-500/10 blur-[130px] rounded-full pointer-events-none" />
+
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
+        <div className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-3.5 shadow-xl shadow-emerald-500/25 mb-3.5 ring-1 ring-white/20">
+          <GraduationCap className="w-8 h-8 text-slate-950 font-black" />
         </div>
-        <h2 className="text-2xl font-black text-white">Reset Password</h2>
-        <p className="mt-1 text-sm text-slate-400">EduPulse Security Recovery</p>
+        <h2 className="text-3xl font-extrabold tracking-tight text-white flex items-center justify-center gap-2">
+          EduPulse <span className="text-gradient-emerald">AI</span>
+        </h2>
+        <p className="mt-1.5 text-xs sm:text-sm text-slate-400 font-medium">
+          Institutional Security & Password Recovery
+        </p>
       </div>
 
-      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md px-4">
-        <div className="glass-panel p-8 rounded-3xl shadow-2xl border border-slate-800 space-y-5">
+      <div className="mt-6 sm:mx-auto sm:w-full sm:max-w-md px-4 relative z-10">
+        <div className="glass-panel p-8 sm:p-9 rounded-3xl shadow-2xl border border-white/10 space-y-5">
           {submitted ? (
             <div className="text-center space-y-4 py-4">
               <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-500/30">
@@ -42,7 +48,7 @@ export const ForgotPassword: React.FC = () => {
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
                   Institutional Email
                 </label>
                 <div className="relative">
@@ -55,7 +61,7 @@ export const ForgotPassword: React.FC = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="faculty@edupulse.edu"
-                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-all"
                   />
                 </div>
               </div>

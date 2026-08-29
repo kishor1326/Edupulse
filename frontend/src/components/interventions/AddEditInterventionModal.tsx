@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, AlertCircle } from 'lucide-react';
+import { X, Save, AlertCircle, CheckCircle2, UserCheck } from 'lucide-react';
 import { Intervention } from '../../types';
 import { interventionService } from '../../services/interventions';
 
@@ -78,32 +78,40 @@ export const AddEditInterventionModal: React.FC<AddEditInterventionModalProps> =
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+      <div className="relative w-full max-w-lg bg-slate-900/95 border border-white/10 rounded-3xl shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/80">
-          <h2 className="text-lg font-bold text-white">
-            {initialData ? 'Update Academic Intervention' : 'Assign New Intervention'}
-          </h2>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-slate-900/90">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400">
+              <UserCheck className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-white tracking-tight">
+                {initialData ? 'Update Academic Intervention' : 'Assign Faculty Intervention'}
+              </h2>
+              <p className="text-xs text-slate-400">Targeted support and mentoring plan</p>
+            </div>
+          </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-all"
+            className="p-2 rounded-xl text-slate-400 hover:text-white bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 transition-all"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
-            <div className="flex items-center gap-2 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
+            <div className="flex items-center gap-2 p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
               <span>{error}</span>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">
+            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
               Intervention Action / Recommendation *
             </label>
             <textarea
@@ -112,17 +120,17 @@ export const AddEditInterventionModal: React.FC<AddEditInterventionModalProps> =
               value={formData.recommendation}
               onChange={(e) => setFormData({ ...formData, recommendation: e.target.value })}
               placeholder="e.g. Mandatory remedial tutorial classes & weekly mentoring check-in"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-500 transition-all leading-relaxed"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Priority Level</label>
+              <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">Priority Level</label>
               <select
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-white text-xs font-semibold focus:outline-none focus:border-emerald-500 transition-all"
               >
                 <option value="Critical">Critical (Immediate)</option>
                 <option value="High">High</option>
@@ -132,11 +140,11 @@ export const AddEditInterventionModal: React.FC<AddEditInterventionModalProps> =
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-slate-300 mb-1">Execution Status</label>
+              <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">Execution Status</label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
-                className="w-full px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-sm focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-white text-xs font-semibold focus:outline-none focus:border-emerald-500 transition-all"
               >
                 <option value="Pending">Pending</option>
                 <option value="In Progress">In Progress</option>
@@ -146,40 +154,40 @@ export const AddEditInterventionModal: React.FC<AddEditInterventionModalProps> =
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Assigned Faculty / Mentor</label>
+            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">Assigned Faculty / Mentor</label>
             <input
               type="text"
               value={formData.assigned_faculty}
               onChange={(e) => setFormData({ ...formData, assigned_faculty: e.target.value })}
               placeholder="e.g. Prof. Sharma / Dr. Rostova"
-              className="w-full px-3.5 py-2 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-500 transition-all"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Action Notes / Feedback</label>
+            <label className="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">Action Notes / Feedback</label>
             <textarea
               rows={2}
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               placeholder="e.g. Conducted first counseling session on Thursday. Student committed to extra lab."
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-white/10 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-emerald-500 transition-all"
             />
           </div>
 
           {/* Actions */}
-          <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+          <div className="pt-4 border-t border-white/10 flex items-center justify-end gap-3">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-slate-700 text-slate-300 text-sm font-medium hover:bg-slate-800 transition-all"
+              className="px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-slate-300 text-xs font-bold transition-all"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-sm transition-all shadow-lg shadow-emerald-500/20 disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               <span>{loading ? 'Saving...' : initialData ? 'Save Changes' : 'Create Intervention'}</span>

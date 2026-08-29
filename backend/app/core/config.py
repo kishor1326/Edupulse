@@ -3,11 +3,11 @@ from typing import List
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "EduPulse - Smart Student Dropout Risk Predictor"
+    PROJECT_NAME: str = "Smart Student Dropout Risk Predictor (SmartDrop AI)"
     API_V1_STR: str = "/api"
     
     # Security
-    JWT_SECRET: str = os.getenv("JWT_SECRET", "super-secret-key-edupulse-ai-2026-production")
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "super-secret-key-smartdrop-ai-2026-production")
     JWT_ALGORITHM: str = os.getenv("JWT_ALGORITHM", "HS256")
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
     

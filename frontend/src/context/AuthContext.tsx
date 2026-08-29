@@ -17,20 +17,20 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('edupulse_user') || localStorage.getItem('smartdrop_user');
+    const saved = localStorage.getItem('smartdrop_user');
     return saved ? JSON.parse(saved) : null;
   });
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('edupulse_token') || localStorage.getItem('smartdrop_token'));
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('smartdrop_token'));
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const verifyUser = async () => {
-      const savedToken = localStorage.getItem('edupulse_token') || localStorage.getItem('smartdrop_token');
+      const savedToken = localStorage.getItem('smartdrop_token');
       if (savedToken) {
         try {
           const currentUser = await authService.getMe();
           setUser(currentUser);
-          localStorage.setItem('edupulse_user', JSON.stringify(currentUser));
+          localStorage.setItem('smartdrop_user', JSON.stringify(currentUser));
         } catch {
           logout();
         }
@@ -45,20 +45,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const res = await authService.login(email, pass);
     setToken(res.access_token);
     setUser(res.user);
-    localStorage.setItem('edupulse_token', res.access_token);
-    localStorage.setItem('edupulse_user', JSON.stringify(res.user));
+    localStorage.setItem('smartdrop_token', res.access_token);
+    localStorage.setItem('smartdrop_user', JSON.stringify(res.user));
   };
 
   const loginDemo = async (role: 'admin' | 'faculty') => {
-    const email = role === 'admin' ? 'admin@edupulse.edu' : 'faculty@edupulse.edu';
+    const email = role === 'admin' ? 'admin@smartdrop.edu' : 'faculty@smartdrop.edu';
     const pass = role === 'admin' ? 'admin123' : 'faculty123';
-    try {
-      await login(email, pass);
-    } catch {
-      // Fallback to legacy seed email if needed
-      const fallbackEmail = role === 'admin' ? 'admin@smartdrop.edu' : 'faculty@smartdrop.edu';
-      await login(fallbackEmail, pass);
-    }
+    await login(email, pass);
   };
 
   const register = async (name: string, email: string, pass: string, role: string) => {
@@ -69,8 +63,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setToken(null);
     setUser(null);
-    localStorage.removeItem('edupulse_token');
-    localStorage.removeItem('edupulse_user');
     localStorage.removeItem('smartdrop_token');
     localStorage.removeItem('smartdrop_user');
   };
